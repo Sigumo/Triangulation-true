@@ -378,6 +378,7 @@ namespace WindowsFormsApplication1
             pictureBox3.Image = null;
             pictureBox5.Image = null;
             vertexes = new List<vertex>();
+            triangles = new List<Triangle>();
         }
     }
 
