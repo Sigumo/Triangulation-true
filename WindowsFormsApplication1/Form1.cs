@@ -28,6 +28,7 @@ namespace WindowsFormsApplication1
 
         private void Open_Click(object sender, EventArgs e)
         {
+            cleanButton.PerformClick();
             Stream str = null;
             OpenFileDialog op = new OpenFileDialog();
             Bitmap bm;
@@ -109,17 +110,21 @@ namespace WindowsFormsApplication1
 
         private void DivImage_Click(object sender, EventArgs e)
         {
-            Rectangle rootRect = new Rectangle(this, 0, 0, 256, 256, true, null);
-            initBitmap();
-            int brightness = (int)numericUpDown1.Value;
-            if (rootRect.checkBrightnes(0, 0, 256, 256, brightness))
+            try
             {
-                rootRect.divideImage(brightness, rootRect);
-            }
-            vertexes.Add(new vertex(0, 0, ((Bitmap)Mem).GetPixel(0, 0)));
-            vertexes.Add(new vertex(pictureBox2.Size.Width - 1, 0, ((Bitmap)Mem).GetPixel(pictureBox2.Size.Width - 1, 0)));
-            vertexes.Add(new vertex(0, pictureBox2.Size.Height - 1, ((Bitmap)Mem).GetPixel(0, pictureBox2.Size.Height - 1)));
-            vertexes.Add(new vertex(pictureBox2.Size.Width - 1, pictureBox2.Size.Height - 1, ((Bitmap)Mem).GetPixel(pictureBox2.Size.Width - 1, pictureBox2.Size.Height - 1)));
+                Rectangle rootRect = new Rectangle(this, 0, 0, 256, 256, true, null);
+                initBitmap();
+                int brightness = (int)numericUpDown1.Value;
+
+                if (rootRect.checkBrightnes(0, 0, 256, 256, brightness))
+                {
+                    rootRect.divideImage(brightness, rootRect);
+                }
+
+                vertexes.Add(new vertex(0, 0, ((Bitmap)Mem).GetPixel(0, 0)));
+                vertexes.Add(new vertex(pictureBox2.Size.Width - 1, 0, ((Bitmap)Mem).GetPixel(pictureBox2.Size.Width - 1, 0)));
+                vertexes.Add(new vertex(0, pictureBox2.Size.Height - 1, ((Bitmap)Mem).GetPixel(0, pictureBox2.Size.Height - 1)));
+                vertexes.Add(new vertex(pictureBox2.Size.Width - 1, pictureBox2.Size.Height - 1, ((Bitmap)Mem).GetPixel(pictureBox2.Size.Width - 1, pictureBox2.Size.Height - 1)));
             
             foreach (vertex v in vertexes)
             {
@@ -129,6 +134,12 @@ namespace WindowsFormsApplication1
             pictureBox2.Image = bmpLines;
             pictureBox2.Refresh();
             vertexes = deleteVertexes(vertexes);
+            GC.Collect();
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Ошибка: файл не открыт");
+            }
         }
 
         public void drawSide(vertex begin, vertex end)
@@ -247,61 +258,71 @@ namespace WindowsFormsApplication1
 
         private void Treangulation_Click(object sender, EventArgs e)
         {
+            cleanButton.PerformClick();
+            DivImage.PerformClick();
             Form1.initBitmap();
             Bitmap bmpTre = bmpLines;
-            vertexes = vertexes.Distinct().ToList();
 
-            List<HashSet<int>> matrix = new List<HashSet<int>>();
-            for (int k = 0; k < vertexes.Count; k++)
+            if (vertexes.Count == 0)
+                MessageBox.Show("Триангуляция невозможна");
+            else
             {
-                matrix.Add(new HashSet<int>());
-            }
+                vertexes = vertexes.Distinct().ToList();
 
-            this.Text = "Triangulation in progress...";
-
-            int i = 0, j = 1;
-            if (vertexes[i].x < vertexes[j].x)
-            {
-                int temp = i;
-                i = j;
-                j = temp;
-            }
-            for (int k = 2; k < vertexes.Count; k++)
-            {
-                if (vertexes[k].x > vertexes[i].x)
+                List<HashSet<int>> matrix = new List<HashSet<int>>();
+                for (int k = 0; k < vertexes.Count; k++)
                 {
-                    j = i;
-                    i = k;
+                    matrix.Add(new HashSet<int>());
                 }
-                else
+
+                this.Text = "Triangulation in progress...";
+
+                int i = 0, j = 1;
+                if (vertexes[i].x < vertexes[j].x)
                 {
-                    if (vertexes[k].x > vertexes[j].x)
+                    int temp = i;
+                    i = j;
+                    j = temp;
+                }
+                for (int k = 2; k < vertexes.Count; k++)
+                {
+                    if (vertexes[k].x > vertexes[i].x)
                     {
-                        j = k;
+                        j = i;
+                        i = k;
+                    }
+                    else
+                    {
+                        if (vertexes[k].x > vertexes[j].x)
+                        {
+                            j = k;
+                        }
                     }
                 }
-            }
-            matrix[i].Add(j);
-            matrix[j].Add(i);
+                matrix[i].Add(j);
+                matrix[j].Add(i);
 
 
-            Queue<int> qeVertexes1 = new Queue<int>();
-            Queue<int> qeVertexes2 = new Queue<int>();
-            Queue<int> qeDirection = new Queue<int>();
-            qeVertexes1.Enqueue(i);
-            qeVertexes2.Enqueue(j);
-            qeDirection.Enqueue(0);
-            while (qeVertexes1.Count() != 0 && qeVertexes2.Count() != 0)
-            {
-                triangulate(qeVertexes1, qeVertexes2, qeDirection, matrix);
+                Queue<int> qeVertexes1 = new Queue<int>();
+                Queue<int> qeVertexes2 = new Queue<int>();
+                Queue<int> qeDirection = new Queue<int>();
+                qeVertexes1.Enqueue(i);
+                qeVertexes2.Enqueue(j);
+                qeDirection.Enqueue(0);
+                while (qeVertexes1.Count() != 0 && qeVertexes2.Count() != 0)
+                {
+                    triangulate(qeVertexes1, qeVertexes2, qeDirection, matrix);
+                }
+                triangles = getTriangles(matrix);
+                this.Text = "ImageChanger";
+                pictureBox5.Image = bmpLines;
+                GC.Collect();
             }
-            triangles = getTriangles(matrix);
-            this.Text = "ImageChanger";
-            pictureBox5.Image = bmpLines;
         }
 
         private void Draw_Click(object sender, EventArgs e)
         {
+            cleanButton.Enabled = true;
             this.Text = "Drawing in progress...";
             Point[] points = new Point[3];
             GraphicsPath brushPath = new GraphicsPath();
@@ -316,12 +337,18 @@ namespace WindowsFormsApplication1
                 brushPath.AddLine(points[0], points[2]);
                 brushPath.AddLine(points[1], points[2]);
                 brushPath.CloseFigure();
-
-                using (var brush = new PathGradientBrush(brushPath))
+                try
                 {
-                    gradient(points, brush, triangles[i], brushPath);
-                    brush.Dispose();
-                    pictureBox3.Refresh();
+                    using (var brush = new PathGradientBrush(brushPath))
+                    {
+                        gradient(points, brush, triangles[i], brushPath);
+                        brush.Dispose();
+                        pictureBox3.Refresh();
+                    }
+                }
+                catch (OutOfMemoryException)
+                {
+                    GC.Collect();
                 }
             }
             this.Text = "ImageChanger";
@@ -377,8 +404,9 @@ namespace WindowsFormsApplication1
             pictureBox2.Image = null;
             pictureBox3.Image = null;
             pictureBox5.Image = null;
-            vertexes = new List<vertex>();
-            triangles = new List<Triangle>();
+            vertexes.Clear();
+            triangles.Clear();
+            GC.Collect();
         }
     }
 
