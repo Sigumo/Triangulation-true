@@ -42,11 +42,16 @@
             this.Draw = new System.Windows.Forms.Button();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.triangulationPoints = new System.Windows.Forms.PictureBox();
+            this.fragmentPic = new System.Windows.Forms.PictureBox();
+            this.cutButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triangulationPoints)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fragmentPic)).BeginInit();
             this.SuspendLayout();
             // 
             // Open
@@ -72,7 +77,7 @@
             // pictureBox3
             // 
             this.pictureBox3.BackColor = System.Drawing.Color.Gainsboro;
-            this.pictureBox3.Location = new System.Drawing.Point(1032, 67);
+            this.pictureBox3.Location = new System.Drawing.Point(706, 386);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(256, 256);
             this.pictureBox3.TabIndex = 5;
@@ -149,6 +154,8 @@
             this.pictureBox1.Size = new System.Drawing.Size(256, 256);
             this.pictureBox1.TabIndex = 14;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
             // pictureBox2
             // 
@@ -161,9 +168,9 @@
             // 
             // Draw
             // 
-            this.Draw.Location = new System.Drawing.Point(1116, 329);
+            this.Draw.Location = new System.Drawing.Point(781, 648);
             this.Draw.Name = "Draw";
-            this.Draw.Size = new System.Drawing.Size(83, 51);
+            this.Draw.Size = new System.Drawing.Size(101, 51);
             this.Draw.TabIndex = 17;
             this.Draw.Text = "Раскрасить";
             this.Draw.UseVisualStyleBackColor = true;
@@ -187,11 +194,42 @@
             this.label1.TabIndex = 21;
             this.label1.Text = "Порог яркости";
             // 
+            // triangulationPoints
+            // 
+            this.triangulationPoints.BackColor = System.Drawing.Color.Gainsboro;
+            this.triangulationPoints.Location = new System.Drawing.Point(380, 386);
+            this.triangulationPoints.Name = "triangulationPoints";
+            this.triangulationPoints.Size = new System.Drawing.Size(256, 256);
+            this.triangulationPoints.TabIndex = 22;
+            this.triangulationPoints.TabStop = false;
+            // 
+            // fragmentPic
+            // 
+            this.fragmentPic.BackColor = System.Drawing.Color.Gainsboro;
+            this.fragmentPic.Location = new System.Drawing.Point(57, 386);
+            this.fragmentPic.Name = "fragmentPic";
+            this.fragmentPic.Size = new System.Drawing.Size(256, 256);
+            this.fragmentPic.TabIndex = 23;
+            this.fragmentPic.TabStop = false;
+            // 
+            // cutButton
+            // 
+            this.cutButton.Location = new System.Drawing.Point(100, 329);
+            this.cutButton.Name = "cutButton";
+            this.cutButton.Size = new System.Drawing.Size(182, 51);
+            this.cutButton.TabIndex = 24;
+            this.cutButton.Text = "Выделить фрагмент";
+            this.cutButton.UseVisualStyleBackColor = true;
+            this.cutButton.Click += new System.EventHandler(this.cutButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1346, 416);
+            this.ClientSize = new System.Drawing.Size(1015, 741);
+            this.Controls.Add(this.cutButton);
+            this.Controls.Add(this.fragmentPic);
+            this.Controls.Add(this.triangulationPoints);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.Draw);
@@ -213,6 +251,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triangulationPoints)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fragmentPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -234,6 +274,9 @@
         private System.Windows.Forms.Button Draw;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox triangulationPoints;
+        private System.Windows.Forms.PictureBox fragmentPic;
+        private System.Windows.Forms.Button cutButton;
 
 
 

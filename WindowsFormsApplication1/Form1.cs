@@ -21,10 +21,20 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
+            startFragment = new Point(0, 0);
+            finishFragment = new Point(255, 255);
+            saveButton.Enabled = false;
+            cutButton.Enabled = false;
+            DivImage.Enabled = false;
+            Triangulation.Enabled = false;
+            Draw.Enabled = false;
         }
 
         public Image currImage;
         static public Image Mem;
+        Point startFragment;
+        Point finishFragment;
+        Bitmap fragment;
 
         private void Open_Click(object sender, EventArgs e)
         {
@@ -49,6 +59,10 @@ namespace WindowsFormsApplication1
                             pictureBox1.Image = tm;
                             currImage = tm;
                             Mem = tm;
+                            cutButton.Enabled = true;
+                            DivImage.Enabled = true;
+                            Triangulation.Enabled = true;
+                            Draw.Enabled = true;
                         }
                     }
                 }
@@ -135,13 +149,37 @@ namespace WindowsFormsApplication1
             pictureBox2.Refresh();
             vertexes = deleteVertexes(vertexes);
             GC.Collect();
+            showTops();
             }
             catch (NullReferenceException)
             {
                 MessageBox.Show("Ошибка: файл не открыт");
             }
         }
-
+        public void showTops()
+        {
+            Bitmap temp = new Bitmap(256, 256);
+            try
+            {
+                for (var i = 0; i < 256; i++)
+                {
+                    for (var j = 0; j < 256; j++)
+                    {
+                        temp.SetPixel(i, j, Color.White);
+                    }
+                }
+                
+                for (int i = 0; i < vertexes.Count; i++)
+                {
+                    temp.SetPixel(vertexes[i].x, vertexes[i].y, vertexes[i].currColor);
+                }
+                this.triangulationPoints.Image = temp;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Что-то тут явно не так");
+            }
+        }
         public void drawSide(vertex begin, vertex end)
         {
             graphics.DrawLine(new Pen(Color.Black), new Point(begin.x, begin.y), new Point(end.x, end.y));
@@ -256,10 +294,37 @@ namespace WindowsFormsApplication1
             pgbrush.Dispose();
         }
 
+        public void checkVertexes()
+        {
+            
+            for (int i = 0; i < vertexes.Count; i++)
+            {
+                Point p = new Point(vertexes[i].x, vertexes[i].y);
+                if (p.X > finishFragment.X || p.X < startFragment.X || p.Y < startFragment.Y || p.Y > finishFragment.Y)
+                {
+                    vertexes.RemoveAt(i);
+                }
+            }
+            if (startFragment != new Point(0, 0))
+            {
+                vertexes.RemoveAll(x => x.x == 0 || x.y == 0);
+            }
+            if (finishFragment != new Point(255, 255))
+            {
+                vertexes.RemoveAll(x => x.x == 255 || x.y == 255);
+            }
+        }
+
         private void Treangulation_Click(object sender, EventArgs e)
         {
-            cleanButton.PerformClick();
+            pictureBox2.Image = null;
+            pictureBox3.Image = null;
+            pictureBox5.Image = null;
+            vertexes.Clear();
+            triangles.Clear();
+            GC.Collect();
             DivImage.PerformClick();
+            
             Form1.initBitmap();
             Bitmap bmpTre = bmpLines;
 
@@ -268,7 +333,10 @@ namespace WindowsFormsApplication1
             else
             {
                 vertexes = vertexes.Distinct().ToList();
-
+                if (cutButton.Enabled == false)
+                {
+                    checkVertexes();
+                }
                 List<HashSet<int>> matrix = new List<HashSet<int>>();
                 for (int k = 0; k < vertexes.Count; k++)
                 {
@@ -317,6 +385,7 @@ namespace WindowsFormsApplication1
                 this.Text = "ImageChanger";
                 pictureBox5.Image = bmpLines;
                 GC.Collect();
+                saveButton.Enabled = true;
             }
         }
 
@@ -375,7 +444,6 @@ namespace WindowsFormsApplication1
                 {
                     if ((str = sv.OpenFile()) != null)
                     {
-                        MessageBox.Show(sv.FileName);
                         try
                         {
                             switch (sv.FilterIndex)
@@ -404,10 +472,62 @@ namespace WindowsFormsApplication1
             pictureBox2.Image = null;
             pictureBox3.Image = null;
             pictureBox5.Image = null;
+            triangulationPoints.Image = null;
+            fragmentPic.Image = null;
             vertexes.Clear();
             triangles.Clear();
+            startFragment = new Point(0, 0);
+            finishFragment = new Point(255, 255);
             GC.Collect();
+            cleanButton.Enabled = false;
+            cutButton.Enabled = true;
         }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            startFragment = e.Location;
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.X > startFragment.X && e.Y > startFragment.Y)
+                finishFragment = e.Location;
+            else
+                startFragment = new Point(0, 0);
+            cutButton.Enabled = true;
+        }
+
+        private void cutButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                fragment = new Bitmap(256, 256);
+                Bitmap original = new Bitmap(currImage);
+                for (var i = 0; i < 256; i++)
+                {
+                    for (var j = 0; j < 256; j++)
+                    {
+                        fragment.SetPixel(i, j, Color.White);
+                    }
+                }
+                int x, y;
+                for (x = startFragment.X; x <= finishFragment.X; x++)
+                {
+                    for (y = startFragment.Y; y <= finishFragment.Y; y++)
+                    {
+                        fragment.SetPixel(x, y, original.GetPixel(x, y));
+                    }
+                }
+                fragmentPic.Image = fragment;
+                Mem = fragment;
+                cutButton.Enabled = false;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Вы ничего не открыли");
+            }
+        }
+
     }
 
     public class vertex
