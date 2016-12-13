@@ -23,11 +23,6 @@ namespace WindowsFormsApplication1
             InitializeComponent();
             startFragment = new Point(0, 0);
             finishFragment = new Point(255, 255);
-            saveButton.Enabled = false;
-            cutButton.Enabled = false;
-            DivImage.Enabled = false;
-            Triangulation.Enabled = false;
-            Draw.Enabled = false;
         }
 
         public Image currImage;
@@ -52,17 +47,14 @@ namespace WindowsFormsApplication1
                     {
                         using (str)
                         {
-                            cleanButton.Enabled = true;
+                            
                             Size sz = new Size(256, 256);
                             bm = new Bitmap(str);
                             Bitmap tm = new Bitmap(bm, sz);
                             pictureBox1.Image = tm;
                             currImage = tm;
                             Mem = tm;
-                            cutButton.Enabled = true;
-                            DivImage.Enabled = true;
-                            Triangulation.Enabled = true;
-                            Draw.Enabled = true;
+                            
                         }
                     }
                 }
@@ -385,13 +377,13 @@ namespace WindowsFormsApplication1
                 this.Text = "ImageChanger";
                 pictureBox5.Image = bmpLines;
                 GC.Collect();
-                saveButton.Enabled = true;
+                
             }
         }
 
         private void Draw_Click(object sender, EventArgs e)
         {
-            cleanButton.Enabled = true;
+            
             this.Text = "Drawing in progress...";
             Point[] points = new Point[3];
             GraphicsPath brushPath = new GraphicsPath();
@@ -479,8 +471,7 @@ namespace WindowsFormsApplication1
             startFragment = new Point(0, 0);
             finishFragment = new Point(255, 255);
             GC.Collect();
-            cleanButton.Enabled = false;
-            cutButton.Enabled = true;
+            
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -494,7 +485,7 @@ namespace WindowsFormsApplication1
                 finishFragment = e.Location;
             else
                 startFragment = new Point(0, 0);
-            cutButton.Enabled = true;
+            
         }
 
         private void cutButton_Click(object sender, EventArgs e)
@@ -520,7 +511,6 @@ namespace WindowsFormsApplication1
                 }
                 fragmentPic.Image = fragment;
                 Mem = fragment;
-                cutButton.Enabled = false;
             }
             catch (NullReferenceException)
             {

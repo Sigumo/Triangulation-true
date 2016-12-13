@@ -99,7 +99,6 @@
             // 
             // cleanButton
             // 
-            this.cleanButton.Enabled = false;
             this.cleanButton.Location = new System.Drawing.Point(188, 11);
             this.cleanButton.Name = "cleanButton";
             this.cleanButton.Size = new System.Drawing.Size(82, 35);
