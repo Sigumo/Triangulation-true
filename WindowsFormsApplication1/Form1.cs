@@ -21,38 +21,38 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
-            startFragment = new Point(0, 0);
-            finishFragment = new Point(255, 255);
+            upperLeftPointOfFragment = new Point(0, 0);
+            lowerRightPointOfFragment = new Point(255, 255);
         }
 
-        public Image currImage;
+        public Image currentImage;
         static public Image Mem;
-        Point startFragment;
-        Point finishFragment;
+        Point upperLeftPointOfFragment;
+        Point lowerRightPointOfFragment;
         Bitmap fragment;
 
         private void Open_Click(object sender, EventArgs e)
         {
             cleanButton.PerformClick();
             Stream str = null;
-            OpenFileDialog op = new OpenFileDialog();
+            OpenFileDialog imageFileDialog = new OpenFileDialog();
             Bitmap bm;
-            op.Filter = "Image files|*.jpeg; *.jpg; *.bmp; *.png; *.gif";
-            op.RestoreDirectory = true;
-            if (op.ShowDialog() == DialogResult.OK)
+            imageFileDialog.Filter = "Image files|*.jpeg; *.jpg; *.bmp; *.png; *.gif";
+            imageFileDialog.RestoreDirectory = true;
+            if (imageFileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    if ((str = op.OpenFile()) != null)
+                    if ((str = imageFileDialog.OpenFile()) != null)
                     {
                         using (str)
                         {
                             
-                            Size sz = new Size(256, 256);
+                            Size sizeOfWorkArea = new Size(256, 256);
                             bm = new Bitmap(str);
-                            Bitmap tm = new Bitmap(bm, sz);
-                            pictureBox1.Image = tm;
-                            currImage = tm;
+                            Bitmap tm = new Bitmap(bm, sizeOfWorkArea);
+                            originalPicture.Image = tm;
+                            currentImage = tm;
                             Mem = tm;
                             
                         }
@@ -67,12 +67,12 @@ namespace WindowsFormsApplication1
 
         public PictureBox getSecondPB()
         {
-            return pictureBox2;
+            return poligonalNet;
         }
 
         public PictureBox getFirstPB()
         {
-            return pictureBox1;
+            return originalPicture;
         }
 
         public static List<vertex> vertexes = new List<vertex>();
@@ -114,7 +114,7 @@ namespace WindowsFormsApplication1
             return vertexes;
         }
 
-        private void DivImage_Click(object sender, EventArgs e)
+        private void DivideImage_Click(object sender, EventArgs e)
         {
             try
             {
@@ -128,17 +128,17 @@ namespace WindowsFormsApplication1
                 }
 
                 vertexes.Add(new vertex(0, 0, ((Bitmap)Mem).GetPixel(0, 0)));
-                vertexes.Add(new vertex(pictureBox2.Size.Width - 1, 0, ((Bitmap)Mem).GetPixel(pictureBox2.Size.Width - 1, 0)));
-                vertexes.Add(new vertex(0, pictureBox2.Size.Height - 1, ((Bitmap)Mem).GetPixel(0, pictureBox2.Size.Height - 1)));
-                vertexes.Add(new vertex(pictureBox2.Size.Width - 1, pictureBox2.Size.Height - 1, ((Bitmap)Mem).GetPixel(pictureBox2.Size.Width - 1, pictureBox2.Size.Height - 1)));
+                vertexes.Add(new vertex(poligonalNet.Size.Width - 1, 0, ((Bitmap)Mem).GetPixel(poligonalNet.Size.Width - 1, 0)));
+                vertexes.Add(new vertex(0, poligonalNet.Size.Height - 1, ((Bitmap)Mem).GetPixel(0, poligonalNet.Size.Height - 1)));
+                vertexes.Add(new vertex(poligonalNet.Size.Width - 1, poligonalNet.Size.Height - 1, ((Bitmap)Mem).GetPixel(poligonalNet.Size.Width - 1, poligonalNet.Size.Height - 1)));
             
             foreach (vertex v in vertexes)
             {
                 bmpLines.SetPixel(v.x, v.y, v.currColor);
             }
 
-            pictureBox2.Image = bmpLines;
-            pictureBox2.Refresh();
+            poligonalNet.Image = bmpLines;
+            poligonalNet.Refresh();
             vertexes = deleteVertexes(vertexes);
             GC.Collect();
             showTops();
@@ -292,16 +292,16 @@ namespace WindowsFormsApplication1
             for (int i = 0; i < vertexes.Count; i++)
             {
                 Point p = new Point(vertexes[i].x, vertexes[i].y);
-                if (p.X > finishFragment.X || p.X < startFragment.X || p.Y < startFragment.Y || p.Y > finishFragment.Y)
+                if (p.X > lowerRightPointOfFragment.X || p.X < upperLeftPointOfFragment.X || p.Y < upperLeftPointOfFragment.Y || p.Y > lowerRightPointOfFragment.Y)
                 {
                     vertexes.RemoveAt(i);
                 }
             }
-            if (startFragment != new Point(0, 0))
+            if (upperLeftPointOfFragment != new Point(0, 0))
             {
                 vertexes.RemoveAll(x => x.x == 0 || x.y == 0);
             }
-            if (finishFragment != new Point(255, 255))
+            if (lowerRightPointOfFragment != new Point(255, 255))
             {
                 vertexes.RemoveAll(x => x.x == 255 || x.y == 255);
             }
@@ -309,13 +309,13 @@ namespace WindowsFormsApplication1
 
         private void Treangulation_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = null;
-            pictureBox3.Image = null;
-            pictureBox5.Image = null;
+            poligonalNet.Image = null;
+            paintedPicture.Image = null;
+            triangulatedPicture.Image = null;
             vertexes.Clear();
             triangles.Clear();
             GC.Collect();
-            DivImage.PerformClick();
+            DivideImage.PerformClick();
             
             Form1.initBitmap();
             Bitmap bmpTre = bmpLines;
@@ -335,7 +335,7 @@ namespace WindowsFormsApplication1
                     matrix.Add(new HashSet<int>());
                 }
 
-                this.Text = "Triangulation in progress...";
+                this.Text = "Запущен процесс триангуляции";
 
                 int i = 0, j = 1;
                 if (vertexes[i].x < vertexes[j].x)
@@ -374,8 +374,8 @@ namespace WindowsFormsApplication1
                     triangulate(qeVertexes1, qeVertexes2, qeDirection, matrix);
                 }
                 triangles = getTriangles(matrix);
-                this.Text = "ImageChanger";
-                pictureBox5.Image = bmpLines;
+                this.Text = "Триангуляция Делоне";
+                triangulatedPicture.Image = bmpLines;
                 GC.Collect();
                 
             }
@@ -387,7 +387,7 @@ namespace WindowsFormsApplication1
             this.Text = "Drawing in progress...";
             Point[] points = new Point[3];
             GraphicsPath brushPath = new GraphicsPath();
-            pictureBox3.Image = bmpLines;
+            paintedPicture.Image = bmpLines;
             for (int i = 0; i < triangles.Count; i++)
             {
                 points[0] = new Point(triangles[i].v1.x, triangles[i].v1.y);
@@ -404,7 +404,7 @@ namespace WindowsFormsApplication1
                     {
                         gradient(points, brush, triangles[i], brushPath);
                         brush.Dispose();
-                        pictureBox3.Refresh();
+                        paintedPicture.Refresh();
                     }
                 }
                 catch (OutOfMemoryException)
@@ -426,7 +426,7 @@ namespace WindowsFormsApplication1
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (pictureBox3.Image != null)
+            if (paintedPicture.Image != null)
             {
                 SaveFileDialog sv = new SaveFileDialog();
                 Stream str;
@@ -440,10 +440,10 @@ namespace WindowsFormsApplication1
                         {
                             switch (sv.FilterIndex)
                             {
-                                case 0: pictureBox3.Image.Save(str, ImageFormat.Jpeg); break;
-                                case 1: pictureBox3.Image.Save(str, ImageFormat.Bmp); break;
-                                case 2: pictureBox3.Image.Save(str, ImageFormat.Png); break;
-                                case 3: pictureBox3.Image.Save(str, ImageFormat.Gif); break;
+                                case 0: paintedPicture.Image.Save(str, ImageFormat.Jpeg); break;
+                                case 1: paintedPicture.Image.Save(str, ImageFormat.Bmp); break;
+                                case 2: paintedPicture.Image.Save(str, ImageFormat.Png); break;
+                                case 3: paintedPicture.Image.Save(str, ImageFormat.Gif); break;
                                 default: MessageBox.Show("Неправильный формат файла"); break;
                             }
                         }
@@ -460,31 +460,17 @@ namespace WindowsFormsApplication1
 
         private void cleanButton_Click(object sender, EventArgs e)
         {
-            Mem = pictureBox1.Image;
-            pictureBox2.Image = null;
-            pictureBox3.Image = null;
-            pictureBox5.Image = null;
+            Mem = originalPicture.Image;
+            poligonalNet.Image = null;
+            paintedPicture.Image = null;
+            triangulatedPicture.Image = null;
             triangulationPoints.Image = null;
-            fragmentPic.Image = null;
+            fragmentPicture.Image = null;
             vertexes.Clear();
             triangles.Clear();
-            startFragment = new Point(0, 0);
-            finishFragment = new Point(255, 255);
+            upperLeftPointOfFragment = new Point(0, 0);
+            lowerRightPointOfFragment = new Point(255, 255);
             GC.Collect();
-            
-        }
-
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            startFragment = e.Location;
-        }
-
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.X > startFragment.X && e.Y > startFragment.Y)
-                finishFragment = e.Location;
-            else
-                startFragment = new Point(0, 0);
             
         }
 
@@ -493,7 +479,7 @@ namespace WindowsFormsApplication1
             try
             {
                 fragment = new Bitmap(256, 256);
-                Bitmap original = new Bitmap(currImage);
+                Bitmap original = new Bitmap(currentImage);
                 for (var i = 0; i < 256; i++)
                 {
                     for (var j = 0; j < 256; j++)
@@ -502,14 +488,14 @@ namespace WindowsFormsApplication1
                     }
                 }
                 int x, y;
-                for (x = startFragment.X; x <= finishFragment.X; x++)
+                for (x = upperLeftPointOfFragment.X; x <= lowerRightPointOfFragment.X; x++)
                 {
-                    for (y = startFragment.Y; y <= finishFragment.Y; y++)
+                    for (y = upperLeftPointOfFragment.Y; y <= lowerRightPointOfFragment.Y; y++)
                     {
                         fragment.SetPixel(x, y, original.GetPixel(x, y));
                     }
                 }
-                fragmentPic.Image = fragment;
+                fragmentPicture.Image = fragment;
                 Mem = fragment;
             }
             catch (NullReferenceException)
@@ -517,6 +503,20 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Вы ничего не открыли");
             }
         }
+
+        private void originalPicture_MouseDown(object sender, MouseEventArgs e)
+        {
+            upperLeftPointOfFragment = e.Location;
+        }
+
+        private void originalPicture_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.X > upperLeftPointOfFragment.X && e.Y > upperLeftPointOfFragment.Y)
+                lowerRightPointOfFragment = e.Location;
+            else
+                upperLeftPointOfFragment = new Point(0, 0);
+        }
+
 
     }
 

@@ -30,28 +30,28 @@
         {
             this.Open = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.paintedPicture = new System.Windows.Forms.PictureBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.cleanButton = new System.Windows.Forms.Button();
-            this.DivImage = new System.Windows.Forms.Button();
+            this.DivideImage = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.Triangulation = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.originalPicture = new System.Windows.Forms.PictureBox();
+            this.poligonalNet = new System.Windows.Forms.PictureBox();
             this.Draw = new System.Windows.Forms.Button();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.triangulatedPicture = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.triangulationPoints = new System.Windows.Forms.PictureBox();
-            this.fragmentPic = new System.Windows.Forms.PictureBox();
+            this.fragmentPicture = new System.Windows.Forms.PictureBox();
             this.cutButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.paintedPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.originalPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.poligonalNet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triangulatedPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.triangulationPoints)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fragmentPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fragmentPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // Open
@@ -74,14 +74,14 @@
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
-            // pictureBox3
+            // paintedPicture
             // 
-            this.pictureBox3.BackColor = System.Drawing.Color.Gainsboro;
-            this.pictureBox3.Location = new System.Drawing.Point(706, 386);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(256, 256);
-            this.pictureBox3.TabIndex = 5;
-            this.pictureBox3.TabStop = false;
+            this.paintedPicture.BackColor = System.Drawing.Color.Gainsboro;
+            this.paintedPicture.Location = new System.Drawing.Point(706, 386);
+            this.paintedPicture.Name = "paintedPicture";
+            this.paintedPicture.Size = new System.Drawing.Size(256, 256);
+            this.paintedPicture.TabIndex = 5;
+            this.paintedPicture.TabStop = false;
             // 
             // saveButton
             // 
@@ -107,15 +107,15 @@
             this.cleanButton.UseVisualStyleBackColor = true;
             this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
             // 
-            // DivImage
+            // DivideImage
             // 
-            this.DivImage.Location = new System.Drawing.Point(540, 329);
-            this.DivImage.Name = "DivImage";
-            this.DivImage.Size = new System.Drawing.Size(96, 51);
-            this.DivImage.TabIndex = 11;
-            this.DivImage.Text = "Разбить изображение";
-            this.DivImage.UseVisualStyleBackColor = true;
-            this.DivImage.Click += new System.EventHandler(this.DivImage_Click);
+            this.DivideImage.Location = new System.Drawing.Point(540, 329);
+            this.DivideImage.Name = "DivideImage";
+            this.DivideImage.Size = new System.Drawing.Size(96, 51);
+            this.DivideImage.TabIndex = 11;
+            this.DivideImage.Text = "Разбить изображение";
+            this.DivideImage.UseVisualStyleBackColor = true;
+            this.DivideImage.Click += new System.EventHandler(this.DivideImage_Click);
             // 
             // numericUpDown1
             // 
@@ -145,25 +145,25 @@
             this.Triangulation.UseVisualStyleBackColor = true;
             this.Triangulation.Click += new System.EventHandler(this.Treangulation_Click);
             // 
-            // pictureBox1
+            // originalPicture
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Gainsboro;
-            this.pictureBox1.Location = new System.Drawing.Point(57, 67);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 256);
-            this.pictureBox1.TabIndex = 14;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            this.originalPicture.BackColor = System.Drawing.Color.Gainsboro;
+            this.originalPicture.Location = new System.Drawing.Point(57, 67);
+            this.originalPicture.Name = "originalPicture";
+            this.originalPicture.Size = new System.Drawing.Size(256, 256);
+            this.originalPicture.TabIndex = 14;
+            this.originalPicture.TabStop = false;
+            this.originalPicture.MouseDown += new System.Windows.Forms.MouseEventHandler(this.originalPicture_MouseDown);
+            this.originalPicture.MouseUp += new System.Windows.Forms.MouseEventHandler(this.originalPicture_MouseUp);
             // 
-            // pictureBox2
+            // poligonalNet
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Gainsboro;
-            this.pictureBox2.Location = new System.Drawing.Point(380, 67);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(256, 256);
-            this.pictureBox2.TabIndex = 15;
-            this.pictureBox2.TabStop = false;
+            this.poligonalNet.BackColor = System.Drawing.Color.Gainsboro;
+            this.poligonalNet.Location = new System.Drawing.Point(380, 67);
+            this.poligonalNet.Name = "poligonalNet";
+            this.poligonalNet.Size = new System.Drawing.Size(256, 256);
+            this.poligonalNet.TabIndex = 15;
+            this.poligonalNet.TabStop = false;
             // 
             // Draw
             // 
@@ -175,14 +175,14 @@
             this.Draw.UseVisualStyleBackColor = true;
             this.Draw.Click += new System.EventHandler(this.Draw_Click);
             // 
-            // pictureBox5
+            // triangulatedPicture
             // 
-            this.pictureBox5.BackColor = System.Drawing.Color.Gainsboro;
-            this.pictureBox5.Location = new System.Drawing.Point(706, 67);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(256, 256);
-            this.pictureBox5.TabIndex = 19;
-            this.pictureBox5.TabStop = false;
+            this.triangulatedPicture.BackColor = System.Drawing.Color.Gainsboro;
+            this.triangulatedPicture.Location = new System.Drawing.Point(706, 67);
+            this.triangulatedPicture.Name = "triangulatedPicture";
+            this.triangulatedPicture.Size = new System.Drawing.Size(256, 256);
+            this.triangulatedPicture.TabIndex = 19;
+            this.triangulatedPicture.TabStop = false;
             // 
             // label1
             // 
@@ -202,14 +202,14 @@
             this.triangulationPoints.TabIndex = 22;
             this.triangulationPoints.TabStop = false;
             // 
-            // fragmentPic
+            // fragmentPicture
             // 
-            this.fragmentPic.BackColor = System.Drawing.Color.Gainsboro;
-            this.fragmentPic.Location = new System.Drawing.Point(57, 386);
-            this.fragmentPic.Name = "fragmentPic";
-            this.fragmentPic.Size = new System.Drawing.Size(256, 256);
-            this.fragmentPic.TabIndex = 23;
-            this.fragmentPic.TabStop = false;
+            this.fragmentPicture.BackColor = System.Drawing.Color.Gainsboro;
+            this.fragmentPicture.Location = new System.Drawing.Point(57, 386);
+            this.fragmentPicture.Name = "fragmentPicture";
+            this.fragmentPicture.Size = new System.Drawing.Size(256, 256);
+            this.fragmentPicture.TabIndex = 23;
+            this.fragmentPicture.TabStop = false;
             // 
             // cutButton
             // 
@@ -227,31 +227,31 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1015, 741);
             this.Controls.Add(this.cutButton);
-            this.Controls.Add(this.fragmentPic);
+            this.Controls.Add(this.fragmentPicture);
             this.Controls.Add(this.triangulationPoints);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox5);
+            this.Controls.Add(this.triangulatedPicture);
             this.Controls.Add(this.Draw);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.poligonalNet);
+            this.Controls.Add(this.originalPicture);
             this.Controls.Add(this.Triangulation);
             this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.DivImage);
+            this.Controls.Add(this.DivideImage);
             this.Controls.Add(this.cleanButton);
             this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.pictureBox3);
+            this.Controls.Add(this.paintedPicture);
             this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.Open);
             this.Name = "Form1";
             this.RightToLeftLayout = true;
-            this.Text = "ImageChanger";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.Text = "Триангуляция Делоне";
+            ((System.ComponentModel.ISupportInitialize)(this.paintedPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.originalPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.poligonalNet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triangulatedPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.triangulationPoints)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fragmentPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fragmentPicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,20 +261,20 @@
 
         private System.Windows.Forms.Button Open;
         private System.Windows.Forms.Button ExitButton;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox paintedPicture;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button cleanButton;
-        private System.Windows.Forms.Button DivImage;
+        private System.Windows.Forms.Button DivideImage;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Button Triangulation;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox originalPicture;
+        private System.Windows.Forms.PictureBox poligonalNet;
         private System.Windows.Forms.Button Draw;
-        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.PictureBox triangulatedPicture;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox triangulationPoints;
-        private System.Windows.Forms.PictureBox fragmentPic;
+        private System.Windows.Forms.PictureBox fragmentPicture;
         private System.Windows.Forms.Button cutButton;
 
 
