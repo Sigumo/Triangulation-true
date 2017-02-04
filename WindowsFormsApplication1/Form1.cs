@@ -14,7 +14,7 @@ using System.Drawing.Imaging;
 
 
 
-namespace WindowsFormsApplication1
+namespace Triangulation
 {
     public partial class Form1 : Form
     {

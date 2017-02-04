@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace Triangulation
 {
     partial class Form1
     {
