@@ -1,9 +1,0 @@
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\Triangulation.csprojResolveAssemblyReference.cache
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\Triangulation.Form1.resources
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\Triangulation.csproj.GenerateResource.Cache
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
-C:\Projects\c#pr\WindowsFormsApplication1\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb

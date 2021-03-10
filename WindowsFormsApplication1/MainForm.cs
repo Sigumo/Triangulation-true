@@ -13,12 +13,15 @@ namespace Triangulation
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        public Form1(IDomainLogic domainLogic)
         {
             InitializeComponent();
             _upperLeftPointOfFragment = new Point(0, 0);
             _lowerRightPointOfFragment = new Point(255, 255);
+            _domainLogic = domainLogic;
         }
+
+        private readonly IDomainLogic _domainLogic;
 
         private Image _currentImage;
         public static Image Mem;
@@ -46,7 +49,7 @@ namespace Triangulation
                     originalPicture.Image = tm;
                     _currentImage = tm;
                     Mem = tm;
-                            
+
                 }
             }
             catch (IOException ex)
@@ -107,7 +110,7 @@ namespace Triangulation
                 InitBitmap();
                 var brightness = (int)numericUpDown1.Value;
 
-                if (rootRect.CheckBrightnes(0, 0, 256, 256, brightness))
+                if (rootRect.CheckBrightness(0, 0, 256, 256, brightness))
                 {
                     rootRect.DivideImage(brightness, rootRect);
                 }
@@ -116,17 +119,17 @@ namespace Triangulation
                 Vertexes.Add(new Vertex(poligonalNet.Size.Width - 1, 0, ((Bitmap)Mem).GetPixel(poligonalNet.Size.Width - 1, 0)));
                 Vertexes.Add(new Vertex(0, poligonalNet.Size.Height - 1, ((Bitmap)Mem).GetPixel(0, poligonalNet.Size.Height - 1)));
                 Vertexes.Add(new Vertex(poligonalNet.Size.Width - 1, poligonalNet.Size.Height - 1, ((Bitmap)Mem).GetPixel(poligonalNet.Size.Width - 1, poligonalNet.Size.Height - 1)));
-            
-            foreach (var v in Vertexes)
-            {
-                BmpLines.SetPixel(v.X, v.Y, v.CurrColor);
-            }
 
-            poligonalNet.Image = BmpLines;
-            poligonalNet.Refresh();
-            Vertexes = DeleteVertexes(Vertexes);
-            GC.Collect();
-            ShowTops();
+                foreach (var v in Vertexes)
+                {
+                    BmpLines.SetPixel(v.X, v.Y, v.CurrColor);
+                }
+
+                poligonalNet.Image = BmpLines;
+                poligonalNet.Refresh();
+                Vertexes = DeleteVertexes(Vertexes);
+                GC.Collect();
+                ShowTops();
             }
             catch (NullReferenceException)
             {
@@ -146,7 +149,7 @@ namespace Triangulation
                         temp.SetPixel(i, j, Color.White);
                     }
                 }
-                
+
                 foreach (var t in Vertexes)
                 {
                     temp.SetPixel(t.X, t.Y, t.CurrColor);
@@ -228,9 +231,9 @@ namespace Triangulation
 
         private static List<Triangle> GetTriangles(IReadOnlyList<HashSet<int>> matrix)
         {
-            
+
             var triangles = new List<Triangle>();
-            
+
             for (var i = 0; i < matrix.Count; i++)
             {
                 foreach (var j in matrix[i]) // i--j
@@ -271,7 +274,7 @@ namespace Triangulation
 
         private void CheckVertexes()
         {
-            
+
             for (var i = 0; i < Vertexes.Count; i++)
             {
                 var p = new Point(Vertexes[i].X, Vertexes[i].Y);
@@ -290,7 +293,7 @@ namespace Triangulation
             }
         }
 
-        private void Treangulation_Click(object sender, EventArgs e)
+        private void Triangulation_Click(object sender, EventArgs e)
         {
             poligonalNet.Image = null;
             paintedPicture.Image = null;
@@ -299,7 +302,7 @@ namespace Triangulation
             _triangles.Clear();
             GC.Collect();
             DivideImage.PerformClick();
-            
+
             InitBitmap();
 
             if (Vertexes.Count == 0)
@@ -359,13 +362,13 @@ namespace Triangulation
                 Text = @"Триангуляция Делоне";
                 triangulatedPicture.Image = BmpLines;
                 GC.Collect();
-                
+
             }
         }
 
         private void Draw_Click(object sender, EventArgs e)
         {
-            
+
             Text = @"Drawing in progress...";
             var points = new Point[3];
             var brushPath = new GraphicsPath();
@@ -406,7 +409,7 @@ namespace Triangulation
             }
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
             if (paintedPicture.Image != null)
             {
@@ -438,7 +441,7 @@ namespace Triangulation
             else MessageBox.Show(@"Нечего сохранять");
         }
 
-        private void cleanButton_Click(object sender, EventArgs e)
+        private void CleanButton_Click(object sender, EventArgs e)
         {
             Mem = originalPicture.Image;
             poligonalNet.Image = null;
@@ -451,10 +454,10 @@ namespace Triangulation
             _upperLeftPointOfFragment = new Point(0, 0);
             _lowerRightPointOfFragment = new Point(255, 255);
             GC.Collect();
-            
+
         }
 
-        private void cutButton_Click(object sender, EventArgs e)
+        private void CutButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -486,12 +489,12 @@ namespace Triangulation
             }
         }
 
-        private void originalPicture_MouseDown(object sender, MouseEventArgs e)
+        private void OriginalPicture_MouseDown(object sender, MouseEventArgs e)
         {
             _upperLeftPointOfFragment = e.Location;
         }
 
-        private void originalPicture_MouseUp(object sender, MouseEventArgs e)
+        private void OriginalPicture_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.X > _upperLeftPointOfFragment.X && e.Y > _upperLeftPointOfFragment.Y)
                 _lowerRightPointOfFragment = e.Location;
@@ -501,194 +504,4 @@ namespace Triangulation
 
 
     }
-
-    public class Vertex
-    {
-        public readonly int X;
-        public readonly int Y;
-        public Color CurrColor;
-        private bool _free;
-
-        public Vertex(int x, int y, Color curr)
-        {
-            X = x;
-            Y = y;
-            CurrColor = curr;
-            _free = true;
-        }
-
-        public override int GetHashCode()
-        {
-            return X.GetHashCode() ^ Y.GetHashCode();
-        }
-    }
-
-    public class Triangle
-    {
-        public readonly Vertex V1;
-        public readonly Vertex V2;
-        public readonly Vertex V3;
-        public Triangle(Vertex v1, Vertex v2, Vertex v3)
-        {
-            V1 = v1;
-            V2 = v2;
-            V3 = v3;
-        }
-    }
-
-    internal abstract class DivideFigure
-    {
-        protected int CurrHight;          /// Store hight(Y) of current figure
-        protected int CurrWidth;          /// Store wigth(X) of current figure
-        protected int X;                  /// X coord for upper left point of current figure.
-        protected int Y;                  /// Y coord for upper left point of current figure.
-        protected Bitmap Bmp;
-
-        /// Divide figure to smaller figures.
-        protected void DrawLine(int x, int y, int currWidth, int currHight, bool vert)
-        {
-            Bmp = (Bitmap)Form1.Mem;
-            if (vert)
-            {
-                for (var i = y; i < currHight + Y; i++)
-                {
-                    Form1.BmpLines.SetPixel(currWidth + X, i, Color.Black);
-                    if (currHight != 1 && currHight != 2 || currWidth != 1 && currWidth != 2) continue;
-                    var curr = Bmp.GetPixel(currWidth + X, i);
-                    var m1 = new Vertex(currWidth + X, i, curr);
-                    Form1.Vertexes.Add(m1);
-                }
-            }
-            else
-            {
-                for (var i = x; i < currWidth + X; i++)
-                {
-                    Form1.BmpLines.SetPixel(i, currHight + Y, Color.Black);
-                    if ((currHight != 1 && currHight != 2) || (currWidth != 1 && currWidth != 2)) continue;
-                    var curr = Bmp.GetPixel(i, currHight + Y);
-                    var m1 = new Vertex(i, currHight + Y, curr);
-                    Form1.Vertexes.Add(m1);
-                }
-            }
-        }
-
-        public bool CheckBrightnes(int x, int y, int currWidth, int currHight, int bright)
-        {
-            float r = (11 * Bmp.GetPixel(x, y).B + 30 * Bmp.GetPixel(x, y).R + 59 * Bmp.GetPixel(x, y).G) / 100;
-            for (var i = x; i < (currWidth + x); i++)
-            {
-                for (var j = y; j < (currHight + y); j++)
-                {
-                    var curr = Bmp.GetPixel(i, j);
-                    float r1 = (11 * curr.B + 30 * curr.R + 59 * curr.G) / 100;
-                    if (r - r1 >= bright)
-                    {
-                        return true;
-                    }
-                    if (r1 > r)
-                    {
-                        r = r1;
-                    }
-                }
-            }
-            return false;
-        }
-
-        protected void CheckBrightnes(int x, int y, int currWidth, int currHight)
-        {
-            float minBright = (11 * Bmp.GetPixel(x, y).B + 30 * Bmp.GetPixel(x, y).R + 59 * Bmp.GetPixel(x, y).G) / 100;
-            var maxBright = minBright;
-            var min = new Point();
-            var max = new Point();
-            for (var i = x; i < (currWidth + x); i++)
-            {
-                for (var j = y; j < (currHight + y); j++)
-                {
-                    var curr = Bmp.GetPixel(i, j);
-                    float currBright = (11 * curr.B + 30 * curr.R + 59 * curr.G) / 100;
-                    if (currBright < minBright)
-                    {
-                        minBright = currBright;
-                        min.X = i;
-                        min.Y = j;
-                    }
-
-                    if (!(currBright > maxBright)) continue;
-                    maxBright = currBright;
-                    max.X = i;
-                    max.Y = j;
-                }
-            }
-            Form1.Vertexes.Add(new Vertex(min.X, min.Y, Bmp.GetPixel(min.X, min.Y)));
-            Form1.Vertexes.Add(new Vertex(max.X, max.Y, Bmp.GetPixel(max.X, max.Y)));
-        }
-    }
-
-    internal sealed class Rectangle : DivideFigure
-    {
-        private readonly Form1 _form;
-        private readonly bool _lineVert;                     /// Store if this figure need to divide horisontal or vertical line
-        private readonly Rectangle _parent;
-
-        public Rectangle(Form1 form, int x, int y, int currWidth, int currHight, bool lineVert, Rectangle parent)
-        {
-            _form = form;
-            X = x;
-            Y = y;
-            CurrHight = currHight;
-            CurrWidth = currWidth;
-            _lineVert = lineVert;
-            Bmp = (Bitmap)Form1.Mem;
-            _parent = parent;
-        }
-
-        public void DivideImage(int bright, Rectangle parent)
-        {
-            if (_lineVert)
-            {
-                CurrWidth = CurrWidth / 2;
-                var r = new Rectangle(_form, X, Y, CurrWidth, CurrHight, false, parent);
-                
-                if (r.CheckBrightnes(X, Y, CurrWidth, CurrHight, bright))
-                {
-                    DrawLine(CurrWidth, Y, CurrWidth, CurrHight, true);
-                    _form.GetSecondPb().Image = Form1.BmpLines;
-                    r.DivideImage(bright, r);
-                }
-                
-                var r1 = new Rectangle(_form, X + CurrWidth, Y, CurrWidth, CurrHight, false, parent);
-                if (!r1.CheckBrightnes(X + CurrWidth, Y, CurrWidth, CurrHight, bright)) return;
-                DrawLine(CurrWidth, Y, CurrWidth, CurrHight, true);
-                r1.DivideImage(bright, r1);
-            }
-            else
-            {
-                CurrHight = CurrHight / 2;
-                var r = new Rectangle(_form, X, Y, CurrWidth, CurrHight, true, parent);
-                if (r.CheckBrightnes(X, Y, CurrWidth, CurrHight, bright))
-                {
-                    DrawLine(X, CurrHight, CurrWidth, CurrHight, false);
-                    _form.GetSecondPb().Image = Form1.BmpLines;
-                    r.DivideImage(bright, parent);
-                }
-                else
-                {
-                    r.CheckBrightnes(X, Y, CurrWidth, CurrHight);
-                }
-
-                var r1 = new Rectangle(_form, X, Y + CurrHight, CurrWidth, CurrHight, true, _parent);
-                if (r1.CheckBrightnes(X, (Y + CurrHight), CurrWidth, CurrHight, bright))
-                {
-                    DrawLine(X, CurrHight + Y, CurrWidth, CurrHight, false);
-                    Form1.MarkRed(X, Y + CurrHight);
-                    r1.DivideImage(bright, parent);
-                }
-                else
-                {
-                    r1.CheckBrightnes(X, (Y + CurrHight), CurrWidth, CurrHight);
-                }
-
-            }
-        }
-    }
-    }
+}

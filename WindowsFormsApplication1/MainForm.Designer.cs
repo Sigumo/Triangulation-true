@@ -91,7 +91,7 @@
             this.saveButton.TabIndex = 6;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // openFileDialog1
             // 
@@ -105,7 +105,7 @@
             this.cleanButton.TabIndex = 9;
             this.cleanButton.Text = "Clean";
             this.cleanButton.UseVisualStyleBackColor = true;
-            this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
+            this.cleanButton.Click += new System.EventHandler(this.CleanButton_Click);
             // 
             // DivideImage
             // 
@@ -143,7 +143,7 @@
             this.Triangulation.TabIndex = 13;
             this.Triangulation.Text = "Триангуляция Делоне";
             this.Triangulation.UseVisualStyleBackColor = true;
-            this.Triangulation.Click += new System.EventHandler(this.Treangulation_Click);
+            this.Triangulation.Click += new System.EventHandler(this.Triangulation_Click);
             // 
             // originalPicture
             // 
@@ -153,8 +153,8 @@
             this.originalPicture.Size = new System.Drawing.Size(256, 256);
             this.originalPicture.TabIndex = 14;
             this.originalPicture.TabStop = false;
-            this.originalPicture.MouseDown += new System.Windows.Forms.MouseEventHandler(this.originalPicture_MouseDown);
-            this.originalPicture.MouseUp += new System.Windows.Forms.MouseEventHandler(this.originalPicture_MouseUp);
+            this.originalPicture.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OriginalPicture_MouseDown);
+            this.originalPicture.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OriginalPicture_MouseUp);
             // 
             // poligonalNet
             // 
@@ -219,7 +219,7 @@
             this.cutButton.TabIndex = 24;
             this.cutButton.Text = "Выделить фрагмент";
             this.cutButton.UseVisualStyleBackColor = true;
-            this.cutButton.Click += new System.EventHandler(this.cutButton_Click);
+            this.cutButton.Click += new System.EventHandler(this.CutButton_Click);
             // 
             // Form1
             // 
