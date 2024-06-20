@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Triangulation", "WindowsFormsApplication1\Triangulation.csproj", "{D9CA1BE4-C3F8-4297-B38E-804F849EA9D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Triangulation", "Triangulation\Triangulation.csproj", "{D9CA1BE4-C3F8-4297-B38E-804F849EA9D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
